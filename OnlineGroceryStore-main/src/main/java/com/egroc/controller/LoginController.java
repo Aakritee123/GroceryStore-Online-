@@ -9,6 +9,7 @@ import com.egroc.service.UserService;
 
 import com.egroc.repository.UserRepository;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -83,7 +84,7 @@ public class LoginController {
 
     // Register user method
     @PostMapping("/register")
-    public String registerUser(@ModelAttribute("userDto") UserDto userDto, Model model) throws Exception {
+    public String registerUser(@Valid @ModelAttribute("userDto") UserDto userDto, Model model) throws Exception {
         // ValidationError object to collect errors
         ValidationError validationError = new ValidationError();
 

@@ -18,16 +18,20 @@ public class HomeController{
     @GetMapping({"/", "index"})
     public String showHomePage(Model model, HttpSession session) {
         model.addAttribute("products", productService.getAllProduct());
-        model.addAttribute("cartCount", GlobalData.cart.size());
+       model.addAttribute("cartCount", GlobalData.cart.size());
+        // Add cart details (count and total amount) to the model
+        //model.addAttribute("cartCount", GlobalData.getCartCount());
+
+        // Return to the cart view
         return "index";
     }
 
-    @GetMapping("/viewproduct/{id}")
-    public String viewProducts(Model model, @PathVariable int id) {
-
-        model.addAttribute("product", productService.getProductById(id).get());
-        return "viewProduct";
-    }
+//    @GetMapping("/viewproduct/{id}")
+//    public String viewProducts(Model model, @PathVariable int id) {
+//
+//        model.addAttribute("product", productService.getProductById(id).get());
+//        return "viewProduct";
+//    }
 
     @Autowired
     CategoryService categoryService;
@@ -40,7 +44,9 @@ public class HomeController{
     public String shop(Model model){
         model.addAttribute("categories",categoryService.getAllCategory());
         model.addAttribute("products",productService.getAllProduct());
+        // Add cart details (count and total amount) to the model
         model.addAttribute("cartCount", GlobalData.cart.size());
+
         return "shop";
     }
 
@@ -51,13 +57,13 @@ public class HomeController{
         model.addAttribute("cartCount", GlobalData.cart.size());
         return "shop";
     }
-    @GetMapping("/shop/viewproduct/{id}")
-    public String viewProduct(Model model, @PathVariable int id){
-
-        model.addAttribute("product",productService.getProductById(id).get());
-        model.addAttribute("cartCount", GlobalData.cart.size());
-        return "viewProduct";
-    }
+//    @GetMapping("/shop/viewproduct/{id}")
+//    public String viewProduct(Model model, @PathVariable int id){
+//
+//        model.addAttribute("product",productService.getProductById(id).get());
+//        model.addAttribute("cartCount", GlobalData.cart.size());
+//        return "viewProduct";
+//    }
 
 
 }

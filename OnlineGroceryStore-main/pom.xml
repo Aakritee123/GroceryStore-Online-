@@ -260,14 +260,19 @@
             <version>3.0.2</version>
         </dependency>
 
+		<!-- https://mvnrepository.com/artifact/com.stripe/stripe-java -->
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-tomcat</artifactId>
-
-			<!-- Use the latest version -->
+			<groupId>com.stripe</groupId>
+			<artifactId>stripe-java</artifactId>
+			<version>28.2.0</version>
 		</dependency>
 
-    </dependencies>
+
+
+
+
+
+	</dependencies>
 
 	<build>
 		<plugins>

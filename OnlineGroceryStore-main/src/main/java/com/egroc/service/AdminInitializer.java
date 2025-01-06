@@ -16,7 +16,7 @@ public class AdminInitializer {
     public CommandLineRunner initAdmin(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         return args -> {
             String adminEmail = "admin@gmail.com";
-            String adminPassword = "123";
+            String adminPassword = "12345678";
 
             // Check if the admin email exists in the repository
             if (userRepository.findByEmail(adminEmail).isEmpty()) {

@@ -1,0 +1,37 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin - Order Details</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-4">
+    <h2>Order Details</h2>
+    <p><strong>Order ID:</strong> <span th:text="${order.id}"></span></p>
+    <p><strong>Customer Name:</strong> <span th:text="${order.customerName}"></span></p>
+    <p><strong>Address:</strong> <span th:text="${order.address}"></span></p>
+    <p><strong>Total Amount:</strong> Rs. <span th:text="${order.totalAmount}"></span></p>
+    <p><strong>Payment Method:</strong> <span th:text="${order.paymentMethod}"></span></p>
+
+    <h3>Items</h3>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Price</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${order.items}">
+            <td th:text="${item.productName}"></td>
+            <td th:text="${item.quantity}"></td>
+            <td th:text="${item.price}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a href="/admin/admin-orders" class="btn btn-secondary">Back</a>
+</div>
+</body>
+</html>

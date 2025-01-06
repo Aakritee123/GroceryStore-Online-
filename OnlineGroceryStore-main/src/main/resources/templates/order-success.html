@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Success - eGrocery</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <style>
+        /* Custom styling for the order summary */
+        .order-summary {
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            padding: 20px;
+        }
+
+        .total-summary {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .btn-home {
+            border-radius: 30px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">
+            <img src="/img/groceries.png" alt="Logo" style="height: 40px;"> eGrocery
+        </a>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<div class="container mt-5">
+    <h2 class="mb-4">Order Confirmation</h2>
+
+    <!-- Display error message if order is not found -->
+    <div th:if="${error}">
+        <p th:text="${error}" style="color: red;"></p>
+    </div>
+
+    <!-- Thank You Message -->
+    <div class="alert alert-success text-center">
+        <h4>Thank you for your order!</h4>
+        <p>Your order has been placed successfully. We will notify you once it is shipped.</p>
+    </div>
+
+    <!-- Order Summary -->
+    <div class="order-summary">
+        <h4>Order Details:</h4>
+        <ul class="list-group">
+
+            <li class="list-group-item">
+                <strong>Customer Name:</strong> <span th:text="${order.customerName}">John Doe</span>
+            </li>
+            <li class="list-group-item">
+                <strong>Shipping Address:</strong> <span th:text="${order.address}">123 Main St.</span>
+            </li>
+            <li class="list-group-item">
+                <strong>Payment Method:</strong> <span th:text="${order.paymentMethod}">Cash on Delivery</span>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Order Item List -->
+    <div class="order-summary">
+        <h4>Order Summary:</h4>
+        <ul class="list-group">
+            <li class="list-group-item" th:each="item : ${order.items}">
+                <div class="d-flex justify-content-between">
+                    <span>
+                        <strong th:text="${item.product.name}">Product Name</strong> -
+                        <span th:text="${item.quantity}">Quantity</span> @ Rs.
+                        <span th:text="${item.product.price}">20.00</span> each
+                    </span>
+                    <span>Rs. <span th:text="${item.quantity * item.product.price}">0.00</span></span>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Total Price -->
+    <div class="total-summary">
+        <div class="d-flex justify-content-between">
+            <span>Total</span>
+            <span>Rs. <span th:text="${order.totalAmount}">0.00</span></span>
+        </div>
+    </div>
+
+    <!-- Go to Home Button -->
+    <div class="text-center mt-4">
+        <a href="/" class="btn btn-success btn-home">Go to Home</a>
+    </div>
+
+    <!-- Optional: View Order History Button (For logged-in users) -->
+
+</div>
+
+<!-- Bootstrap and jQuery JS -->
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
+</body>
+</html>

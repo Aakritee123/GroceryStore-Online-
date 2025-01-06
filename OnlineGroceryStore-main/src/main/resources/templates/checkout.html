@@ -1,243 +1,230 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - eGrocery</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <style>
+        /* Custom styling for Remove button */
+        .btn-remove {
+            color: #dc3545;
+            background: none;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
 
-    <title>Document</title>
+        .btn-remove i {
+            margin-right: 5px;
+        }
+
+        /* Custom Navbar Styling */
+        .navbar-brand img {
+            height: 40px;
+        }
+
+        /* New two-column layout for checkout */
+        .checkout-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+        }
+
+        .order-summary, .checkout-form {
+            flex: 1;
+        }
+
+        /* Card enhancements */
+        .card {
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        /* Button Enhancements */
+        .btn-block {
+            border-radius: 30px;
+        }
+
+        /* Spacing adjustments for order list */
+        .list-group-item {
+            padding: 15px 20px;
+        }
+
+        .total-summary {
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        /* Adjusting form input width */
+        .form-control {
+            border-radius: 10px;
+        }
+
+        .navbar {
+            background-color:green;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar .navbar-nav .nav-link {
+            color: white;
+        }
+        .navbar .navbar-nav .nav-link:hover {
+            color: #ffc107; /* Hover color */
+        }
+
+         .cart-icon {
+            position: relative;
+            display: inline-block;
+        }
+
+        .cart-icon i {
+            font-size: 1.3rem; /* Slightly larger icon for good balance */
+            color: white;
+        }
+
+        .cart-icon .badge {
+            position: absolute;
+            top: -2px; /* Adjusted to touch and overlap the cart icon */
+            right: -3px; /* Positioned for proper alignment */
+            background-color: red;
+            color: white;
+            font-size: 0.7rem; /* Smaller badge font size */
+            font-weight: bold;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px; /* Smaller badge dimensions */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid white; /* Thin border for separation */
+            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+        }
+    </style>
 </head>
 <body>
 
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light" >
+<!-- Navbar with Logo, Home, and Cart -->
+<nav class="navbar navbar-expand-lg navbar-light ">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">
-            <img th:src="@{/images/logo.png}"  src="../static/images/logo.png" width="auto" height="40" class="d-inline-block align-top" alt=""/>
+        <a class="navbar-brand text-light" href="/">
+            <img src="/img/groceries.png" alt="Logo"> eGrocery
         </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto"></ul>
-            <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" th:href="@{/}" href="#">home</a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item ">
+                    <a class="nav-link" href="@{/}">Home</a>
                 </li>
-                <li class="nav-item active">
-                    <a class="nav-link" th:href="@{/shop}" href="#">shop</a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/login}" href="#">login</a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/logout}" href="#">logout</a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" th:href="@{/cart}" href="#">cart</a>
-                </li>
-                <li class="nav-item active">
-                    <span class="nav-link" th:text="${cartCount}">0</span>
+                <li class="nav-item">
+                    <!-- Cart Icon with Overlapping Badge -->
+                    <a class="nav-link cart-icon" th:href="@{/cart}" href="#">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="badge" th:text="${cartCount}">0</span>
+                    </a>
                 </li>
             </ul>
-
         </div>
     </div>
 </nav>
-<div class="container">
 
-    <!--Section: Block Content-->
-    <section class="mt-5 mb-4">
+<div class="container mt-5">
+    <h2 class="mb-4">Checkout</h2>
 
-        <!--Grid row-->
-        <div class="row">
-
-            <!--Grid column-->
-            <div class="col-lg-8 mb-4">
-
-                <!-- Card -->
-                <div class="card wish-list pb-1">
+    <!-- Two Column Layout for Order Summary and Checkout Form -->
+    <div class="checkout-container">
+        <!-- Order Summary Section -->
+        <div class="order-summary">
+            <form th:action="@{/checkout/update}" method="POST">
+                <div class="card">
                     <div class="card-body">
-
-                        <h5 class="mb-2">Billing details</h5>
-
-                        <!-- Grid row -->
-                        <div class="row">
-
-                            <!-- Grid column -->
-                            <div class="col-lg-6">
-
-                                <!-- First name -->
-                                <div class="md-form md-outline mb-0 mb-lg-4">
-                                    <label for="firstName">First name</label>
-                                    <input type="text" id="firstName" required class="form-control mb-0 mb-lg-2">
+                        <h5>Order Summary</h5>
+                        <ul class="list-group">
+                            <li class="list-group-item" th:each="item, indexStat : ${cart}">
+                                <div class="d-flex justify-content-between">
+                                    <span>
+                                        <strong th:text="${item.product.name}">Product Name</strong>
+                                        <br>
+                                        <button type="submit" class="btn-remove" name="removeIndex" th:value="${indexStat.index}">
+                                            <i class="fas fa-trash-alt"></i> Remove
+                                        </button>
+                                    </span>
+                                    <span>Rs. <span th:text="${item.getTotalPrice()}">0.00</span></span>
                                 </div>
-
-                            </div>
-                            <!-- Grid column -->
-
-                            <!-- Grid column -->
-                            <div class="col-lg-6">
-
-                                <!-- Last name -->
-                                <div class="md-form md-outline">
-                                    <label for="lastName">Last name</label>
-                                    <input type="text" id="lastName" required class="form-control">
-                                </div>
-
-                            </div>
-                            <!-- Grid column -->
-
-                        </div>
-                        <!-- Grid row -->
-
-
-
-                        <!-- Country -->
-                        <div class="d-flex flex-wrap">
-                            <div class="select-outline position-relative w-100">
-                                <label>Country - <strong>NEPAL</strong></label>
-
-
-                            </div>
-                        </div>
-
-                        <!-- Address Part 1 -->
-                        <div class="md-form md-outline mt-2">
-                            <label for="form14">Address (Line 1)</label>
-                            <input type="text" required id="form14" placeholder="House number and street name" class="form-control">
-                        </div>
-
-                        <!-- Address Part 2 -->
-                        <div class="md-form md-outline mt-2">
-                            <label for="form15">Address (Line 2)</label>
-                            <input type="text" id="form15" placeholder="Apartment, suite, unit etc. (optional)"
-                                   class="form-control">
-                        </div>
-
-                        <!-- Postcode / ZIP -->
-                        <div class="md-form md-outline mt-3">
-                            <label for="form16">Postcode / ZIP</label>
-                            <input type="text" maxlength="6" minlength="6" required id="form16" class="form-control">
-                        </div>
-
-                        <!-- Town / City -->
-                        <div class="md-form md-outline mt-2">
-                            <label for="form17">Town / City</label>
-                            <input type="text" required id="form17" class="form-control">
-
-                        </div>
-
-                        <!-- Phone -->
-                        <div class="md-form md-outline mt-2">
-                            <label for="form18">Phone</label>
-                            <input type="number" minlength="10" maxlength="10" required id="form18" class="form-control">
-                        </div>
-
-                        <!-- Email address -->
-                        <div class="md-form md-outline mt-2">
-                            <label for="form19">Email address</label>
-                            <input type="email" required id="form19" class="form-control">
-                        </div>
-
-                        <!-- Additional information -->
-                        <div class="md-form md-outline mt-2">
-                            <label for="form76">Additional information</label>
-                            <textarea id="form76" class="md-textarea form-control" rows="4"></textarea>
-                        </div>
-
-
-
-                    </div>
-                </div>
-                <!-- Card -->
-
-            </div>
-            <!--Grid column-->
-
-            <!--Grid column-->
-            <div class="col-lg-4">
-
-                <!-- Card -->
-                <div class="card mb-4">
-                    <div class="card-body">
-
-                        <h5 class="mb-3">The total amount </h5>
-
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
-                                Amount Payable
-                                <span>Rs.<span th:text="${total}"></span></span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                                Shipping
-                                <span>Gratis</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
-                                <div>
-                                    <strong>The total amount of</strong>
-                                    <strong>
-                                        <p class="mb-0">(including VAT)</p>
-                                    </strong>
-                                </div>
-                                <span><strong>Rs.<span th:text="${total}"></span></strong></span>
                             </li>
                         </ul>
-
-                        <form action="" method="post" th:action="@{/payNow}" >
-                            <button type="submit"  class="btn btn-primary btn-block waves-effect waves-light">Pay Now</button>
-                        </form>
-
-                    </div>
-                </div>
-                <!-- Card -->
-
-                <!-- Card -->
-                <div class="card mb-4">
-                    <div class="card-body">
-
-                        <a class="dark-grey-text d-flex justify-content-between" data-toggle="collapse" href="#collapseExample"
-                           aria-expanded="false" aria-controls="collapseExample">
-                            Add a discount code (optional)
-                            <span><i class="fas fa-chevron-down pt-1"></i></span>
-                        </a>
-
-                        <div class="collapse" id="collapseExample">
-                            <div class="mt-3">
-                                <div class="md-form md-outline mb-0">
-                                    <input type="text" id="discount-code" class="form-control font-weight-light"
-                                           placeholder="Enter discount code">
-                                </div>
-                            </div>
+                        <hr>
+                        <div class="d-flex justify-content-between total-summary">
+                            <span>Total</span>
+                            <span>Rs. <span th:text="${total}">0.00</span></span>
                         </div>
                     </div>
                 </div>
-                <!-- Card -->
 
-            </div>
-            <!--Grid column-->
+                <!-- Update Cart Button -->
 
+            </form>
         </div>
-        <!--Grid row-->
 
-    </section>
-    <!--Section: Block Content-->
+        <!-- Checkout Form Section -->
+        <div class="checkout-form">
+            <form th:action="@{/checkout/process}" th:object="${order}" method="POST" id="checkout-form">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="mb-3">Shipping Details</h5>
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" name="name" th:field="*{customerName}"  class="form-control" placeholder="Enter your full name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Shipping Address</label>
+                            <textarea id="address" name="address" th:field="*{address}" class="form-control" rows="3" placeholder="Enter your shipping address" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="paymentMethod">Payment Method</label>
+                            <select id="paymentMethod" name="paymentMethod" class="form-control" required>
+                                <option value="COD"  th:selected="${order.paymentMethod == 'COD'}" >Cash on Delivery</option>
+<!--                                <option value="Card">Credit/Debit Card</option>-->
+                                <option value="Stripe"  th:selected="${order.paymentMethod == 'Stripe'}">
+                                    <i class="fab fa-stripe"></i> Stripe
+                                </option>
+                            </select>
+                        </div>
 
 
+
+
+
+                        <!-- Stripe Payment Form -->
+                        <div id="stripe-payment" style="display:none;">
+                            <div class="form-group">
+                                <label for="card-element">Credit or Debit Card</label>
+                                <div id="card-element"></div>
+                            </div>
+
+                            <div id="card-errors" role="alert"></div>
+                        </div>
+
+                        <!-- Place Order Button -->
+                        <button type="submit" class="btn btn-success btn-block">Place an Order</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
+<!-- Stripe.js -->
+<script src="https://js.stripe.com/v3/"></script>
+<script src="js/stripe.js"></script>
 
-
-
-
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
 </body>
 </html>

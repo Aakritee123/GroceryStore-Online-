@@ -197,7 +197,7 @@
 
 
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <head>
     <title>eGrocery Store</title>
@@ -209,7 +209,7 @@
     <style>
         /* Custom styling for the navbar */
         .navbar {
-            background-color: #28a745;
+            background-color:green;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
         }
 
@@ -232,6 +232,37 @@
         .navbar .nav-link:hover {
             color: #ffc107;
         }
+
+
+        /* Cart icon with overlapping badge */
+        .cart-icon {
+            position: relative;
+            display: inline-block;
+        }
+
+        .cart-icon i {
+            font-size: 1.3rem; /* Slightly larger icon for good balance */
+            color: white;
+        }
+
+        .cart-icon .badge {
+            position: absolute;
+            top: -2px; /* Adjusted to touch and overlap the cart icon */
+            right: -3px; /* Positioned for proper alignment */
+            background-color: red;
+            color: white;
+            font-size: 0.7rem; /* Smaller badge font size */
+            font-weight: bold;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px; /* Smaller badge dimensions */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid white; /* Thin border for separation */
+            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+        }
+
 
         /* Carousel Styling */
         .carousel img {
@@ -316,25 +347,31 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link active" href="/">Home</a>
+                    <a class="nav-link active" href="@{/}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/shop">Shop</a>
+                    <a class="nav-link" href="@{/shop}">Shop</a>
                 </li>
             </ul>
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="/register"><i class="fas fa-user"></i> Sign Up</a>
+                    <a class="nav-link" th:href="@{/register}" ><i class="fas fa-user"></i> Sign Up</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/login"><i class="fas fa-sign-in-alt"></i> Log In</a>
+                    <a class="nav-link" th:href="@{/login}"><i class="fas fa-sign-in-alt"></i> Log In</a>
                 </li>
+
                 <li class="nav-item">
-                    <a class="nav-link" href="/logout"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+                    <!-- Cart Icon with Overlapping Badge -->
+                    <a class="nav-link cart-icon" th:href="@{/cart}" href="#">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="badge" th:text="${cartCount}">0</span>
+                    </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/cart"><i class="fas fa-shopping-cart"></i> Cart</a>
-                </li>
+
+
+
+
             </ul>
         </div>
     </div>
@@ -377,7 +414,10 @@
                         <h5 class="card-title" th:text="${product.name}"></h5>
                         <p class="card-text" th:text="${product.description}"></p>
                         <h4>Rs <span th:text="${product.price}"></span></h4>
-                        <a th:href="@{/viewproduct/{id}(id=${product.id})}" class="btn btn-primary">View Product</a>
+                        <a href="" th:href="@{/addToCart/{id}(id = ${product.id})}" class="btn btn-primary">
+                            Add to Cart
+                        </a>
+
                     </div>
                 </div>
             </div>

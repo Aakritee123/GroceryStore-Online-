@@ -1,8 +1,14 @@
 package com.egroc.DTO;
 
 import com.egroc.enums.Role;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 public class UserDto {
+
+
     public String getFullName() {
         return fullName;
     }
@@ -10,10 +16,16 @@ public class UserDto {
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
-
+    @NotEmpty
     private String fullName;
+
     private String username;
+
+    @NotNull
+    @Email
     private String email;
+    @NotEmpty
+    @Size(min = 8)
     private String password;
 
     private Role role;  // Optional, if needed

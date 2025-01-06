@@ -13,9 +13,11 @@ public class Product{
     @JoinColumn(name="category_id" , referencedColumnName="category_id")
     private Category category;
     private double price;
-
     private String description;
     private String imageName;
+
+
+
 
 }
 
