@@ -24,7 +24,7 @@
         </thead>
         <tbody>
         <tr th:each="item : ${order.items}">
-            <td th:text="${item.productName}"></td>
+            <td th:text="${item.product.name}"></td>
             <td th:text="${item.quantity}"></td>
             <td th:text="${item.price}"></td>
         </tr>

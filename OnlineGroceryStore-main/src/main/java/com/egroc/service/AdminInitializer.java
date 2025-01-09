@@ -1,36 +1,39 @@
 package com.egroc.service;
-
-import com.egroc.enums.Role;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import com.egroc.model.Users;
+import com.egroc.enums.UserRole;
+import com.egroc.model.User;
 import com.egroc.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.stereotype.Component;
 
-@Configuration
+
+@EnableJpaRepositories(basePackages = "com.bloodorganproject.app.Repository")
+@Component
 public class AdminInitializer {
 
-    @Bean
-    public CommandLineRunner initAdmin(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        return args -> {
-            String adminEmail = "admin@gmail.com";
-            String adminPassword = "12345678";
+    @Autowired
+    private UserRepository userRepository;
 
-            // Check if the admin email exists in the repository
-            if (userRepository.findByEmail(adminEmail).isEmpty()) {
-                Users admin = new Users();
-                admin.setEmail(adminEmail);
-                admin.setUsername(adminEmail);
-                admin.setFullName("Admin User");
-                admin.setPassword(passwordEncoder.encode(adminPassword)); // Password encoding
-                admin.setRole(Role.ADMIN);  // Assign role as Admin
-                userRepository.save(admin);  // Save to the database
-                System.out.println("Admin user created successfully.");
-            } else {
-                System.out.println("Admin user already exists.");
+    @Autowired
+    private MyPasswordEncoder passwordEncoder;
+
+    @Bean
+    ApplicationRunner initializeAdmin() {
+
+        return args -> {
+            if (userRepository.count() == 0) {
+                User admin = new User();
+                admin.setName("Admin");
+                admin.setUsername("admin");
+                admin.setEmail("admin100@gmail.com");
+                admin.setPassword(passwordEncoder.encode("admin"));
+                admin.setRole(UserRole.ADMIN);
+                userRepository.save(admin);
+                System.out.println("Admin user created");
             }
         };
+
     }
 }

@@ -2,16 +2,17 @@ package com.egroc.controller;
 
 import com.egroc.DTO.ProductDTO;
 import com.egroc.enums.OrderStatus;
+import com.egroc.enums.UserRole;
 import com.egroc.exception.ResourceNotFoundException;
 import com.egroc.model.Category;
 import com.egroc.model.Order;
 import com.egroc.model.Product;
-import com.egroc.service.CategoryService;
+import com.egroc.model.User;
+import com.egroc.repository.UserRepository;
+import com.egroc.service.*;
 
-import com.egroc.service.FileService;
-import com.egroc.service.OrderService;
-import com.egroc.service.ProductService;
-
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -38,14 +39,46 @@ public class AdminController{
     //String uploadDir = System.getProperty("user.dir") + "/img/productImages";
   String uploadDir=System.getProperty("user.dir") + "/img/productImages";
    //private static final String uploadDir = "src/main/resources/static/img/productImages/";
-
+  @Autowired
+    UserService userService;
     @Autowired
     CategoryService categoryService;
    @Autowired
    ProductService productService;
     //admin dashboard
+
+    @Autowired
+    private UserRepository userRepository;
+//
 @GetMapping("/admin")
-    public String adminHome(){
+public String adminHome(Model model, HttpServletRequest request) {
+    String username = null;
+    Cookie[] cookies = request.getCookies();
+
+    // Extract username from cookies
+    if (cookies != null) {
+        for (Cookie cookie : cookies) {
+            if ("username".equals(cookie.getName())) {
+                username = cookie.getValue();
+                break;
+            }
+        }
+    }
+
+    // If no username cookie, redirect to login
+    if (username == null) {
+        return "redirect:/login";
+    }
+
+    // Fetch user details based on the username
+    User user = userService.findByUsername(username); // Assuming you have a UserService
+    if (user == null || user.getRole() != UserRole.ADMIN) {
+        // Redirect to access denied page if user is not admin
+        return "redirect:/access-denied";
+    }
+
+    // Add username to model for display in the admin page
+    model.addAttribute("username", username);
     return "admin";
 }
 
@@ -153,43 +186,45 @@ public class AdminController{
 
 
 
-
     @Autowired
     private OrderService orderService;
 
+    // List Orders with Optional Status Filter
     @GetMapping("/admin/admin-orders")
     public String listOrders(@RequestParam(required = false) String status, Model model) {
         List<Order> orders;
-        if (status != null) {
-            orders = orderService.getOrdersByStatus(OrderStatus.valueOf(status.toUpperCase())); // Add error handling for invalid status
+        if (status != null && !status.isEmpty()) {
+            try {
+                orders = orderService.getOrdersByStatus(OrderStatus.valueOf(status.toUpperCase())); // Ensure status matches enum
+            } catch (IllegalArgumentException e) {
+                model.addAttribute("error", "Invalid status filter.");
+                orders = orderService.getAllOrders();  // Fallback to all orders if invalid status
+            }
         } else {
             orders = orderService.getAllOrders();
         }
         model.addAttribute("orders", orders);
-        return "admin-orders";
+        return "admin-orders";  // Display orders to admin
     }
 
-
-
-
+    // View Order Details with Error Handling for Invalid ID
     @GetMapping("/admin/admin-orders/{id}")
     public String viewOrderDetails(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
         try {
-            Order order = orderService.getOrderById(id); // Assuming it throws an exception if not found
+            Order order = orderService.getOrderById(id);
             model.addAttribute("order", order);
-            return "admin-order-details";
+            return "admin-order-details";  // View order details page
         } catch (ResourceNotFoundException e) {
             redirectAttributes.addFlashAttribute("error", "Order not found.");
-            return "redirect:/admin/admin-orders"; // Redirect to the list with an error message
+            return "redirect:/admin/admin-orders";  // Redirect with error message
         }
     }
 
-
-
+    // Update Order Status
     @PostMapping("/admin/admin-orders/update-status/{id}")
     public String updateOrderStatus(@PathVariable Long id, @RequestParam String status, RedirectAttributes redirectAttributes) {
         try {
-            OrderStatus orderStatus = OrderStatus.valueOf(status.toUpperCase()); // Validate the status
+            OrderStatus orderStatus = OrderStatus.valueOf(status.toUpperCase());  // Validate status
             orderService.updateOrderStatus(id, orderStatus);
             redirectAttributes.addFlashAttribute("message", "Order status updated successfully.");
         } catch (IllegalArgumentException e) {
@@ -197,8 +232,7 @@ public class AdminController{
         } catch (ResourceNotFoundException e) {
             redirectAttributes.addFlashAttribute("error", "Order not found.");
         }
-        return "redirect:/admin/admin-orders";
+        return "redirect:/admin/admin-orders";  // Redirect to orders list
     }
-
 
 }

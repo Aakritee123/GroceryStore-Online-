@@ -29,8 +29,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">
-            <img src="/img/groceries.png" width="auto" height="40"
-                 class="d-inline-block align-top" alt=""/>
+            <img src="/img/groceries.png" alt="Logo"> eGrocery
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,7 +52,7 @@
     </div>
 </nav>
 <div class="container">
-    <h3 class="text-success">Add a new Product</h3>
+    <h3 class="text-success justify-content-center mt-3">Add a new Product</h3>
     <form th:action="@{/admin/products/add}" method="post" th:object="${productDTO}" enctype="multipart/form-data">
         <div class="row">
             <div class="col-sm-5">

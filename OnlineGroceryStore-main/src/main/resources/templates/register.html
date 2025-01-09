@@ -1,269 +1,131 @@
-<!--<!DOCTYPE html>-->
-<!--<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
-<!--    <title>Registration Form</title>-->
-<!--    &lt;!&ndash; Bootstrap CSS &ndash;&gt;-->
-<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">-->
-<!--    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">-->
-<!--</head>-->
-<!--<body class="bg-light">-->
-
-
-<!--&lt;!&ndash;<nav class="navbar navbar-expand-lg navbar-light bg-light" >&ndash;&gt;-->
-<!--<div class="container-fluid">-->
-<!--    <a class="navbar-brand" href="#logo"><i class="fa-solid fa-cart-shopping"></i>eGrocery</a>-->
-<!--    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"-->
-<!--            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">-->
-<!--        <span class="navbar-toggler-icon"></span>-->
-<!--    </button>-->
-
-<!--    <div class="collapse navbar-collapse" id="navbarSupportedContent">-->
-<!--        <ul class="navbar-nav mr-auto"></ul>-->
-<!--        <ul class="navbar-nav">-->
-<!--            <li class="nav-item active">-->
-<!--                <a class="nav-link" th:href="@{/}" href="#">home</a>-->
-<!--            </li>-->
-<!--            <li class="nav-item active">-->
-<!--                <a class="nav-link" th:href="@{/shop}" href="#">shop</a>-->
-<!--            </li>-->
-<!--            <li class="nav-item active">-->
-<!--                <a class="nav-link" th:href="@{/register}">Sign Up</a>-->
-<!--            </li>-->
-
-<!--        </ul>-->
-
-<!--    </div>-->
-<!--    </div>-->
-<!--</nav>-->
-<!--<div class="container">-->
-<!--    <div class="col-sm-6">-->
-<!--        <h3 style="margin-top: 10px">Sign Up Now</h3>-->
-<!--        <p>Please fill out this to register</p>-->
-<!--        <form th:action="@{/register}" th:object="${user}" method="post">-->
-
-<!--            <div class="form-group">-->
-<!--                <label for="fullName">Full Name</label>-->
-<!--                <input type="text" th:value="${fullName}" name="fullName" id="fullName" required placeholder="fullName"-->
-<!--                       class="form-control form-control-lg">-->
-<!--            </div>-->
-
-<!--            <div class="form-group">-->
-<!--                <label for="username">Username </label>-->
-<!--                <input type="text" th:value="${username}" name="username" id="username" required placeholder="username"-->
-<!--                       class="form-control form-control-lg">-->
-
-<!--            </div>-->
-<!--            <div class="form-group">-->
-<!--                <label for="email">Email address</label>-->
-<!--                <input type="email" th:value="${email}" class="form-control form-control-lg" required minlength="6"-->
-<!--                       placeholder="Email" name="email" id="email"-->
-<!--                       aria-describedby="emailHelp">-->
-<!--                <small id="emailHelp" class="form-text text-muted">We'll never share your email with-->
-<!--                    anyone else.</small>-->
-<!--            </div>-->
-<!--            <div class="form-group">-->
-<!--                <label for="password">Password</label>-->
-<!--                <input type="password" th:value="${password}" class="form-control form-control-lg" required-->
-<!--                       placeholder="Password" name="password"-->
-<!--                       id="password">-->
-<!--            </div>-->
-
-<!--            <input type="submit" value="Register" class="btn btn-primary btn-block">-->
-<!--            <span style="margin-top: 10px">Already have an account <a class="linkControl"-->
-<!--                                                                      th:href="@{/login} ">Login here</a></span>-->
-<!--        </form>-->
-<!--    </div>-->
-<!--</div>-->
-
-
-<!--&lt;!&ndash;<div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">&ndash;&gt;-->
-<!--&lt;!&ndash;    <div class="card shadow-sm p-4" style="max-width: 400px; width: 100%;">&ndash;&gt;-->
-<!--&lt;!&ndash;        <div class="mb-3 text-center">&ndash;&gt;-->
-<!--&lt;!&ndash;            <h2>Registration</h2>&ndash;&gt;-->
-<!--&lt;!&ndash;            <p class="text-muted">Create your account</p>&ndash;&gt;-->
-<!--&lt;!&ndash;        </div>&ndash;&gt;-->
-
-<!--&lt;!&ndash;        <div class="alert alert-info text-center" th:if="${message != null}">&ndash;&gt;-->
-<!--&lt;!&ndash;            [[${message}]]&ndash;&gt;-->
-<!--&lt;!&ndash;        </div>&ndash;&gt;-->
-
-<!--&lt;!&ndash;        <form th:action="@{/register}" method="post" th:object="${user}">&ndash;&gt;-->
-<!--&lt;!&ndash;            <div class="mb-3">&ndash;&gt;-->
-<!--&lt;!&ndash;                <label for="fullname" class="form-label">Fullname:</label>&ndash;&gt;-->
-<!--&lt;!&ndash;                <input&ndash;&gt;-->
-<!--&lt;!&ndash;                        th:field="*{fullname}"&ndash;&gt;-->
-<!--&lt;!&ndash;                        type="text"&ndash;&gt;-->
-<!--&lt;!&ndash;                        id="fullname"&ndash;&gt;-->
-<!--&lt;!&ndash;                        name="fullname"&ndash;&gt;-->
-<!--&lt;!&ndash;                        class="form-control"&ndash;&gt;-->
-<!--&lt;!&ndash;                        placeholder="Enter your fullname"&ndash;&gt;-->
-<!--&lt;!&ndash;                        required>&ndash;&gt;-->
-<!--&lt;!&ndash;            </div>&ndash;&gt;-->
-
-<!--&lt;!&ndash;            <div class="mb-3">&ndash;&gt;-->
-<!--&lt;!&ndash;                <label for="email" class="form-label">Email:</label>&ndash;&gt;-->
-<!--&lt;!&ndash;                <input&ndash;&gt;-->
-<!--&lt;!&ndash;                        th:field="*{email}"&ndash;&gt;-->
-<!--&lt;!&ndash;                        type="email"&ndash;&gt;-->
-<!--&lt;!&ndash;                        id="email"&ndash;&gt;-->
-<!--&lt;!&ndash;                        name="email"&ndash;&gt;-->
-<!--&lt;!&ndash;                        class="form-control"&ndash;&gt;-->
-<!--&lt;!&ndash;                        placeholder="Enter your email"&ndash;&gt;-->
-<!--&lt;!&ndash;                        required>&ndash;&gt;-->
-<!--&lt;!&ndash;            </div>&ndash;&gt;-->
-
-<!--&lt;!&ndash;            <div class="mb-3">&ndash;&gt;-->
-<!--&lt;!&ndash;                <label for="password" class="form-label">Password:</label>&ndash;&gt;-->
-<!--&lt;!&ndash;                <input&ndash;&gt;-->
-<!--&lt;!&ndash;                        th:field="*{password}"&ndash;&gt;-->
-<!--&lt;!&ndash;                        type="password"&ndash;&gt;-->
-<!--&lt;!&ndash;                        id="password"&ndash;&gt;-->
-<!--&lt;!&ndash;                        name="password"&ndash;&gt;-->
-<!--&lt;!&ndash;                        class="form-control"&ndash;&gt;-->
-<!--&lt;!&ndash;                        placeholder="Enter your password"&ndash;&gt;-->
-<!--&lt;!&ndash;                        required>&ndash;&gt;-->
-<!--&lt;!&ndash;            </div>&ndash;&gt;-->
-
-<!--&lt;!&ndash;            <button type="submit" class="btn btn-primary w-100">Register</button>&ndash;&gt;-->
-<!--&lt;!&ndash;        </form>&ndash;&gt;-->
-<!--&lt;!&ndash;    </div>&ndash;&gt;-->
-<!--&lt;!&ndash;</div>&ndash;&gt;-->
-
-<!--&lt;!&ndash; Bootstrap JS &ndash;&gt;-->
-<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>-->
-<!--</body>-->
-<!--</html>-->
-
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration Form</title>
+    <title>Register</title>
+
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
         body {
             background: linear-gradient(135deg, #f5f5f5, #e8f5e9);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-          .navbar {
-            background-color: green;
+        .navbar {
+            background-color: #28a745;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
         }
 
-         .navbar-brand {
-             color: white;
-             font-weight: bold;
-             font-size: 1.25rem;
-             display: flex;
-             align-items: center;
-         }
+        .navbar-brand {
+            color: white;
+            font-weight: bold;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+        }
 
-         .navbar-brand img {
-             height: 35px;
-             margin-right: 10px;
-         }
+        .navbar-brand img {
+            height: 35px;
+            margin-right: 10px;
+        }
 
-         .card {
-             border-radius: 15px;
-             background: white;
-         }
+        .card {
+            border-radius: 15px;
+            background: white;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
 
-         .btn-primary {
-             background-color: #28a745;
-             border-color: #28a745;
-         }
+        .btn-primary {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
 
-         .btn-primary:hover {
-             background-color: #218838;
-             border-color: #1e7e34;
-         }
+        .btn-primary:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
 
-         .form-label {
-             font-weight: 500;
-         }
+        .form-label {
+            font-weight: 500;
+        }
 
-         .linkControl {
-             color: #28a745;
-             font-weight: bold;
-         }
+        .linkControl {
+            color: #28a745;
+            font-weight: bold;
+        }
 
-         .linkControl:hover {
-             text-decoration: underline;
-         }
+        .linkControl:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
-<!-- Navigation Bar -->
-<nav class="navbar navbar-expand-lg ">
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg">
     <div class="container">
-
-            <a class="navbar-brand" href="#">
-                <img src="/img/groceries.png" alt="Logo">
-                eGrocery
-            </a>
-
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-
+        <a class="navbar-brand" href="#">
+            <img src="/img/groceries.png" alt="Logo">
+            eGrocery
+        </a>
     </div>
 </nav>
 
-<!-- Registration Form -->
-<div class="container d-flex justify-content-center align-items-center" style="min-height: 90vh;">
-    <div class="card p-4 w-100" style="max-width: 500px;">
+<!-- Register Form -->
+<div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="card shadow p-4" style="max-width: 500px; width: 100%;">
         <div class="text-center mb-4">
-            <h3 class="text-success">Sign Up Now</h3>
-            <p class="text-muted">Create an account and start shopping!</p>
+            <h2 class="text-success">Create Your Account</h2>
+            <p class="text-muted">Please fill out the form to register</p>
         </div>
 
-        <form th:action="@{/register}" th:object="${user}" method="post">
-            <div class="mb-3">
-                <label for="fullName" class="form-label">Full Name</label>
-                <input type="text" th:value="${fullName}" name="fullName" id="fullName" required placeholder="Enter your full name"
-                       class="form-control">
-            </div>
-
+        <form action="/register" method="post">
+            <!-- Username -->
             <div class="mb-3">
                 <label for="username" class="form-label">Username</label>
-                <input type="text" th:value="${username}" name="username" id="username" required placeholder="Enter a username"
-                       class="form-control">
+                <input type="text" id="username" name="username" class="form-control"
+                       placeholder="Enter your username" required
+                       pattern="[A-Za-z0-9]{5,15}"
+                       title="Username should be between 5 and 15 characters, no special characters">
             </div>
 
+            <!-- Email -->
             <div class="mb-3">
-                <label for="email" class="form-label">Email Address</label>
-                <input type="email" th:value="${email}" class="form-control" required minlength="6"
-                       placeholder="Enter your email" name="email" id="email">
-                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" required>
             </div>
 
+            <!-- Password -->
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
-                <input type="password" th:value="${password}" class="form-control" required
-                       placeholder="Enter a strong password" name="password" id="password">
+                <input type="password" id="password" name="password" class="form-control"
+                       placeholder="Enter your password" required minlength="6">
             </div>
 
-            <button type="submit" class="btn btn-primary w-100">Register</button>
-            <div class="text-center mt-3">
-                <span>Already have an account? <a class="linkControl" th:href="@{/login}">Login here</a></span>
+            <!-- Confirm Password -->
+            <div class="mb-3">
+                <label for="confirmPassword" class="form-label">Confirm Password</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" class="form-control"
+                       placeholder="Confirm your password" required minlength="6">
             </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary w-100">Register</button>
         </form>
+
+        <!-- Error Message -->
+        <p th:if="${error}" th:text="${error}" class="text-danger mt-3 text-center"></p>
+
+        <div class="text-center mt-3">
+            <p class="mb-0">Already have an account? <a href="/login" class="linkControl">Login here</a></p>
+        </div>
     </div>
 </div>
 
 <!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="js/register.js">
-</script>
-
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

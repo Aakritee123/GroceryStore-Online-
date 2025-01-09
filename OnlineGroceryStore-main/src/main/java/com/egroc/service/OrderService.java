@@ -6,7 +6,7 @@ import com.egroc.model.OrderItem;
 import com.egroc.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.hibernate.Hibernate;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,11 +26,14 @@ public class OrderService {
         return orderRepository.findAll();
     }
 
+
+
+
     // Get order by ID
-    public Order getOrderById(Long id) {
-        Optional<Order> order = orderRepository.findById(id);
-        return order.orElse(null);
+    public Order getOrderById(Long orderId) {
+        return orderRepository.findByIdWithItems(orderId).orElse(null); // Fetch order with items
     }
+
     public List<Order> getOrdersByStatus(OrderStatus status) {
         return orderRepository.findByOrderStatus(status); // Assuming this method exists
     }
@@ -43,26 +46,6 @@ public class OrderService {
     }
 
 
-//    public Order calculateTotalAmount(Long orderId) {
-//        Order order = orderRepository.findById(orderId)
-//                .orElseThrow(() -> new RuntimeException("Order not found"));
-//
-//        double totalAmount = 0.0;
-//
-//        // Calculate total for all items in the order
-//        for (OrderItem item : order.getItems()) {
-//            double itemTotal = item.getQuantity() * item.getProduct().getPrice();
-//            totalAmount += itemTotal;
-//        }
-//
-//        // Optionally, apply shipping or discount logic
-//        double shippingFee = 50.0; // Example shipping fee
-//        totalAmount += shippingFee;
-//
-//        // Set the total amount in the order
-//        order.setTotalAmount(totalAmount);
-//        return orderRepository.save(order);  // Save the updated order with totalAmount
-//    }
 
 }
 

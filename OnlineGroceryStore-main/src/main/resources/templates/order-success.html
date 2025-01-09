@@ -8,6 +8,20 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
     <style>
         /* Custom styling for the order summary */
+         .navbar {
+            background-color: #28a745;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar navbar-brand {
+            font-weight: bold;
+            color: white;
+            display: flex;
+            align-items: center;
+        }
+
+
+
         .order-summary {
             border-radius: 10px;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
@@ -29,7 +43,7 @@
 <body>
 
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-success">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">
             <img src="/img/groceries.png" alt="Logo" style="height: 40px;"> eGrocery
@@ -53,7 +67,7 @@
     </div>
 
     <!-- Order Summary -->
-    <div class="order-summary">
+    <div class="order-summary" >
         <h4>Order Details:</h4>
         <ul class="list-group">
 
@@ -70,29 +84,24 @@
     </div>
 
     <!-- Order Item List -->
-    <div class="order-summary">
-        <h4>Order Summary:</h4>
-        <ul class="list-group">
-            <li class="list-group-item" th:each="item : ${order.items}">
-                <div class="d-flex justify-content-between">
-                    <span>
-                        <strong th:text="${item.product.name}">Product Name</strong> -
-                        <span th:text="${item.quantity}">Quantity</span> @ Rs.
-                        <span th:text="${item.product.price}">20.00</span> each
-                    </span>
-                    <span>Rs. <span th:text="${item.quantity * item.product.price}">0.00</span></span>
-                </div>
-            </li>
-        </ul>
-    </div>
+<!--    <div class="order-summary"  >-->
+<!--        <h4>Order Summary:</h4>-->
+<!--        <ul class="list-group">-->
+<!--            <li class="list-group-item" th:each="item : ${order.items}">-->
+<!--                <div class="d-flex justify-content-between">-->
+<!--                    <span>-->
+<!--                        <strong th:text="${item.product.name}">Product Name</strong> - -->
+<!--                        <span th:text="${item.quantity}">Quantity</span> @ Rs.-->
+<!--                        <span th:text="${item.product.price}">20.00</span> each-->
+<!--                    </span>-->
+<!--                    <span>Rs. <span th:text="${item.quantity * item.product.price}">0.00</span></span>-->
+<!--                </div>-->
+<!--            </li>-->
+<!--        </ul>-->
+<!--    </div>-->
 
-    <!-- Total Price -->
-    <div class="total-summary">
-        <div class="d-flex justify-content-between">
-            <span>Total</span>
-            <span>Rs. <span th:text="${order.totalAmount}">0.00</span></span>
-        </div>
-    </div>
+
+</div>
 
     <!-- Go to Home Button -->
     <div class="text-center mt-4">

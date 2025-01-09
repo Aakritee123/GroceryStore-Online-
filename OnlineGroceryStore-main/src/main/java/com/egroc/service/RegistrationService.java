@@ -1,25 +1,28 @@
-package com.egroc.service;
 
+package com.egroc.service;
 import com.egroc.model.User;
 import com.egroc.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService {
+public class RegistrationService {
+
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private MyPasswordEncoder passwordEncoder;
 
-    public void saveUser(User user) {
-        // Encrypt the password before saving
+    // Check if the email is already taken
+    public boolean isEmailTaken(String email) {
+        return userRepository.findByEmail(email) != null;
+    }
+
+    // Register the user with an encrypted password
+    public void registerUser(User user) {
+        // Encrypt the password before saving to the database
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username); // Assumes UserRepository has this method
-    }
-
 }
