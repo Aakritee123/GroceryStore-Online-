@@ -19,7 +19,6 @@ import java.util.List;
 public class Order {
 
     @Enumerated(EnumType.STRING)
-    @NotNull
     private OrderStatus orderStatus;
 
     @Id
@@ -29,7 +28,7 @@ public class Order {
     private String customerName;
     private String address;
     private String paymentMethod;
-    private double totalAmount;
+//    private double totalAmount;
 
 
 
@@ -37,7 +36,7 @@ public class Order {
 
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private List<OrderItem> items;
+    private List<OrderItem> items =new ArrayList<>();
 
     // Getters, Setters, Constructors
 
@@ -48,11 +47,12 @@ public class Order {
         this.customerName = customerName;
         this.address = address;
         this.paymentMethod = paymentMethod;
-        this.items = new ArrayList<>(); // Initialize the items list
+         // Initialize the items list
     }
 
     // Utility method to add an OrderItem and maintain bidirectional relationship
     public void addItem(OrderItem orderItem) {
+        items.add(orderItem);
         orderItem.setOrder(this); // Set the back-reference in OrderItem
     }
     public double getTotalAmount() {
@@ -60,5 +60,16 @@ public class Order {
         return items.stream()
                 .mapToDouble(item -> item.getQuantity() * item.getProduct().getPrice()) // sum of item total
                 .sum();
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", customerName='" + customerName + '\'' +
+                ", address='" + address + '\'' +
+                ", paymentMethod='" + paymentMethod + '\'' +
+                ", items=" + items +
+                '}';
     }
 }
