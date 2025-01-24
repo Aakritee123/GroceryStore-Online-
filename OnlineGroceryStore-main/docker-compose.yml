@@ -1,0 +1,72 @@
+version: '3.7'
+
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql_container
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
+      MYSQL_DATABASE: grocery_store1
+    ports:
+      - "3306:3306"
+    networks:
+      - grocery_network
+
+  springboot-app:
+    build:
+      context: .
+    #container_name: online_grocery_store
+      dockerfile: Dockerfile
+    ports:
+      - "9095:9095"
+    depends_on:
+      - mysql
+    networks:
+      - grocery_network
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/grocery_store1
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ""
+
+networks:
+  grocery_network:
+    driver: bridge
+
+
+
+#version: "3.8"
+#
+#services:
+#
+#  db:
+#    image:mysql:latest
+#    container_name: mysql_container
+#    ports:
+#      - "3306:3306"
+#    environment:
+#          MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
+#          MYSQL_DATABASE: grocery_store1
+#    # This automatically creates the database
+#    volumes:
+#      - db_data:/var/lib/postgresql/data
+#    restart: always  # Optional: ensure the database starts if it stops
+#
+#  app:
+#    image: jobsearch:latest
+#    container_name: jobsearch-app
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    ports:
+#      - "8081:8080"
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/jobsearch
+#      SPRING_DATASOURCE_USERNAME: jobsearch
+#      SPRING_DATASOURCE_PASSWORD: jobsearch
+#      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+#    depends_on:
+#      - db
+#    restart: always  # Optional: ensure the app starts after the db
+#
+#volumes:
+#  db_data:

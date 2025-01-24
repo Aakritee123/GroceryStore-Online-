@@ -33,6 +33,19 @@ public class HomeController{
         return "index";
     }
 
+
+    @GetMapping({"/index2", "index2"})
+    public String showUserPage(Model model, HttpSession session) {
+        model.addAttribute("products", productService.getAllProduct());
+
+        model.addAttribute("cartCount", cart.size());
+        // Add cart details (count and total amount) to the model
+        //model.addAttribute("cartCount", GlobalData.getCartCount());
+
+        // Return to the cart view
+        return "index2";
+    }
+
 //    @GetMapping("/viewproduct/{id}")
 //    public String viewProducts(Model model, @PathVariable int id) {
 //

@@ -84,15 +84,75 @@ public String adminHome(Model model, HttpServletRequest request) {
 
 
     @GetMapping("/admin/categories")
-    public String getCat(Model model){
+    public String getCat(Model model,HttpServletRequest request){
+
+        String username = null;
+        Cookie[] cookies = request.getCookies();
+
+        // Extract username from cookies
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("username".equals(cookie.getName())) {
+                    username = cookie.getValue();
+                    break;
+                }
+            }
+        }
+
+        // If no username cookie, redirect to login
+        if (username == null) {
+            return "redirect:/login";
+        }
+
+        // Fetch user details based on the username
+        User user = userService.findByUsername(username); // Assuming you have a UserService
+        if (user == null || user.getRole() != UserRole.ADMIN) {
+            // Redirect to access denied page if user is not admin
+            return "redirect:/access-denied";
+        }
+
+        // Add username to model for display in the admin page
+        model.addAttribute("username", username);
+
     model.addAttribute("categories",categoryService.getAllCategory());
+
+        // Fetch user details based on the username
+
     return "categories";
     }
 
 
 
     @GetMapping("/admin/categories/add")
-    public String getCatAdd(Model model){
+    public String getCatAdd(Model model,HttpServletRequest request){
+        String username = null;
+        Cookie[] cookies = request.getCookies();
+
+        // Extract username from cookies
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("username".equals(cookie.getName())) {
+                    username = cookie.getValue();
+                    break;
+                }
+            }
+        }
+
+        // If no username cookie, redirect to login
+        if (username == null) {
+            return "redirect:/login";
+        }
+
+        // Fetch user details based on the username
+        User user = userService.findByUsername(username); // Assuming you have a UserService
+        if (user == null || user.getRole() != UserRole.ADMIN) {
+            // Redirect to access denied page if user is not admin
+            return "redirect:/access-denied";
+        }
+
+        // Add username to model for display in the admin page
+        model.addAttribute("username", username);
+
     model.addAttribute("category",new Category());
         return "categoriesAdd";
     }
@@ -122,7 +182,35 @@ public String adminHome(Model model, HttpServletRequest request) {
 
     //Product Section
     @GetMapping("/admin/products")
-    public String products(Model model){
+    public String products(Model model,HttpServletRequest request){
+
+        String username = null;
+        Cookie[] cookies = request.getCookies();
+
+        // Extract username from cookies
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("username".equals(cookie.getName())) {
+                    username = cookie.getValue();
+                    break;
+                }
+            }
+        }
+
+        // If no username cookie, redirect to login
+        if (username == null) {
+            return "redirect:/login";
+        }
+
+        // Fetch user details based on the username
+        User user = userService.findByUsername(username); // Assuming you have a UserService
+        if (user == null || user.getRole() != UserRole.ADMIN) {
+            // Redirect to access denied page if user is not admin
+            return "redirect:/access-denied";
+        }
+
+        // Add username to model for display in the admin page
+        model.addAttribute("username", username);
         model.addAttribute("products",productService.getAllProduct());
         return "products";
     }
@@ -191,7 +279,7 @@ public String adminHome(Model model, HttpServletRequest request) {
 
     // List Orders with Optional Status Filter
     @GetMapping("/admin/admin-orders")
-    public String listOrders(@RequestParam(required = false) String status, Model model) {
+    public String listOrders(@RequestParam(required = false) String status, Model model,HttpServletRequest request) {
         List<Order> orders;
         if (status != null && !status.isEmpty()) {
             try {
@@ -203,6 +291,34 @@ public String adminHome(Model model, HttpServletRequest request) {
         } else {
             orders = orderService.getAllOrders();
         }
+
+        String username = null;
+        Cookie[] cookies = request.getCookies();
+
+        // Extract username from cookies
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("username".equals(cookie.getName())) {
+                    username = cookie.getValue();
+                    break;
+                }
+            }
+        }
+
+        // If no username cookie, redirect to login
+        if (username == null) {
+            return "redirect:/login";
+        }
+
+        // Fetch user details based on the username
+        User user = userService.findByUsername(username); // Assuming you have a UserService
+        if (user == null || user.getRole() != UserRole.ADMIN) {
+            // Redirect to access denied page if user is not admin
+            return "redirect:/access-denied";
+        }
+
+        // Add username to model for display in the admin page
+        model.addAttribute("username", username);
         model.addAttribute("orders", orders);
         return "admin-orders";  // Display orders to admin
     }
